@@ -1,6 +1,7 @@
 "use strict";
 var XLS = require('xlsjs');
 var _ = require('lodash');
+var pinyin = require('pinyin');
 module.exports = function(fileName){
 	var workbook = XLS.readFile(fileName, {cellNF: true});
 
@@ -12,6 +13,8 @@ module.exports = function(fileName){
 		var sheet = workbook.Sheets[sheetName];
 
 		var data = {};
+
+		var colNameArray = [];
 
 		for(var index in sheet){
 			if(sheet.hasOwnProperty(index)){
@@ -25,13 +28,37 @@ module.exports = function(fileName){
 
 						if(data[col] === undefined){
 							data[col] = {
-								colName: col,
+								label: col,
 								values: []
 							};
 						}
 
 						if(row === 1){
 							data[col].description = item.w;
+
+							var colName = pinyin(item.w, {
+								style: pinyin.STYLE_NORMAL,
+								heteronym: false
+							}).join('_');
+
+							var colNameSuffix = 0;
+
+							_.forEach(colNameArray, function(c){
+								if(c.name === colName){
+									colNameSuffix = c.suffix++;
+								}
+							});
+
+							colNameArray.push({
+								name: colName,
+								suffix: colNameSuffix
+							});
+
+							if(colNameSuffix > 0){
+								colName = colName+'_'+colNameSuffix;
+							}
+
+							data[col].name = colName;
 						}
 						else{
 							data[col].values[row-2] = item.w;

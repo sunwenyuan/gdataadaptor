@@ -5,6 +5,7 @@
 	"dependencies": {
 		"xlsx": "*",
 		"xlsjs": "*",
-		"lodash": "*"
+		"lodash": "*",
+		"pinyin": "*"
 	}
 }
