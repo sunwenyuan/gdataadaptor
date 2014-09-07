@@ -6,6 +6,7 @@
 		"xlsx": "*",
 		"xlsjs": "*",
 		"lodash": "*",
-		"pinyin": "*"
+		"pinyin": "*",
+		"moment": "*"
 	}
 }

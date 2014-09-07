@@ -61,6 +61,26 @@ module.exports = function(fileName){
 							data[col].name = colName;
 						}
 						else{
+							if(data[col].dataType === undefined){
+								var t = item.t;
+								switch(t){
+									case 'n':
+										data[col].dataType = 'number';
+										break;
+									case 's':
+										data[col].dataType = 'string';
+										break;
+									case 'b':
+										data[col].dataType = 'boolean';
+										break;
+									case 'e':
+										data[col].dataType = 'error';
+										break;
+									default:
+										data[col].dataType = 'string';
+										break;
+								}
+							}
 							data[col].values[row-2] = item.w;
 						}
 					}
@@ -79,7 +99,9 @@ module.exports = function(fileName){
 			}
 		}
 
-		parseResult.push(parseResultItem);
+		if(parseResultItem.data.length > 0){
+			parseResult.push(parseResultItem);
+		}
 	});
 
 	return parseResult;
